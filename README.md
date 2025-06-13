@@ -360,6 +360,14 @@ node bitcoin-elastos-proxy.js
 The library also exports an `auxpow` helper used internally to generate the
 AuxPoW payload submitted to the Elastos daemon.
 
+### Elastos Daemon Setup
+
+The proxy expects an Elastos node with RPC enabled. Build the daemon from
+the [Elastos.ELA repository](https://github.com/jayhines91/Elastos.ELA) and
+launch it with `--rpcuser` and `--rpcpassword` configured.  The proxy uses the
+`createauxblock` and `submitauxblock` RPC calls as documented in that
+repository.
+
 ### Integrating with U-NOMP
 
 To run the merged mining proxy inside a [U-NOMP](https://github.com/UNOMP/unified-node-open-mining-portal) deployment,
