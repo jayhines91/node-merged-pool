@@ -343,6 +343,54 @@ Start pool
 pool.start();
 ```
 
+### Merged Mining Proxy Example
+
+`bitcoin-elastos-proxy.js` demonstrates how to run a simple stratum proxy that
+connects to an upstream Bitcoin pool and forwards work to miners while also
+preparing auxiliary work for an Elastos daemon.  The proxy accepts miners on the
+configured port and handles share submissions by relaying them to the upstream
+server. It automatically injects the current ELA aux block hash into each job
+and, when a block is found, constructs the AuxPoW proof and submits it to the
+Elastos daemon.
+
+```bash
+node bitcoin-elastos-proxy.js
+```
+
+The library also exports an `auxpow` helper used internally to generate the
+AuxPoW payload submitted to the Elastos daemon.
+
+### Integrating with U-NOMP
+
+To run the merged mining proxy inside a [U-NOMP](https://github.com/UNOMP/unified-node-open-mining-portal) deployment,
+replace the bundled `node-stratum-pool` dependency with this repository and
+launch the proxy alongside your pool instance.
+
+1. Clone U-NOMP and install its dependencies:
+
+```bash
+git clone https://github.com/UNOMP/unified-node-open-mining-portal unomp
+cd unomp
+npm install
+```
+
+2. Replace the default stratum pool module with **node-merged-pool**:
+
+```bash
+rm -rf node_modules/node-stratum-pool
+git clone https://github.com/UNOMP/node-merged-pool node_modules/node-stratum-pool
+```
+
+3. Configure your coin's pool as usual.  Use `bitcoin-elastos-proxy.js` as a
+template for defining `upstream` and `elastosDaemon` settings.
+
+4. Start the proxy to accept miner connections:
+
+```bash
+node bitcoin-elastos-proxy.js
+```
+
+
 
 Credits
 -------
